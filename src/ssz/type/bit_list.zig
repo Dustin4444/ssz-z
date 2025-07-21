@@ -175,7 +175,7 @@ pub fn BitListType(comptime _limit: comptime_int) type {
         /// Clones the underlying `ArrayList`.
         ///
         /// Caller owns the memory.
-        pub fn deepClone(allocator: std.mem.Allocator, value: *const Type) !Type {
+        pub fn clone(allocator: std.mem.Allocator, value: *const Type) !Type {
             const cloned = Type{
                 .data = try value.data.clone(allocator),
                 .bit_len = value.bit_len,
@@ -442,14 +442,14 @@ test "BitListType - sanity with bools" {
     try std.testing.expectEqualSlices(bool, &expected_bools, actual_bools);
 }
 
-test "deepClone" {
+test "clone" {
     const allocator = std.testing.allocator;
 
     const Bits = BitListType(40);
     var b: Bits.Type = try Bits.Type.fromBitLen(allocator, 30);
     defer b.deinit(allocator);
 
-    var cloned = try Bits.deepClone(allocator, &b);
+    var cloned = try Bits.clone(allocator, &b);
     defer cloned.deinit(allocator);
 
     try std.testing.expect(&b != &cloned);
