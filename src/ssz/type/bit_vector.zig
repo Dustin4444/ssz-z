@@ -246,8 +246,6 @@ test "BitVectorType - sanity with bools" {
 }
 
 test "clone" {
-    // create a fixed vector type and instance and round-trip serialize
-
     const allocator = std.testing.allocator;
 
     const length = 44;
